@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { useState, useEffect, createContext, useContext } from 'react'
+import { ThemeProvider } from './lib/theme'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import ApiKeys from './pages/ApiKeys'
@@ -202,19 +203,21 @@ function App() {
   if (isLoading) return <div>Loading...</div>
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, isLoading }}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />
-          <Route path="/" element={user ? <Layout /> : <Navigate to="/login" />}>
-            <Route index element={<Dashboard />} />
-            <Route path="configs" element={<ProviderConfigs />} />
-            <Route path="keys" element={<ApiKeys />} />
-            <Route path="usage" element={<Usage />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </AuthContext.Provider>
+    <ThemeProvider>
+      <AuthContext.Provider value={{ user, login, logout, isLoading }}>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />
+            <Route path="/" element={user ? <Layout /> : <Navigate to="/login" />}>
+              <Route index element={<Dashboard />} />
+              <Route path="configs" element={<ProviderConfigs />} />
+              <Route path="keys" element={<ApiKeys />} />
+              <Route path="usage" element={<Usage />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </AuthContext.Provider>
+    </ThemeProvider>
   )
 }
 

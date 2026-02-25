@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { api, Stats, UsageLog } from '@/App'
 
-function SimpleLineChart({ data, dataKey, color = "#3b82f6" }: { data: { label: string; value: number }[]; dataKey: string; color?: string }) {
+function SimpleLineChart({ data, color = "#3b82f6" }: { data: { label: string; value: number }[]; color?: string }) {
   const max = Math.max(...data.map(d => d.value), 1)
   
   return (
@@ -24,7 +24,7 @@ function SimpleLineChart({ data, dataKey, color = "#3b82f6" }: { data: { label: 
   )
 }
 
-function SimpleBarChart({ data, dataKey }: { data: { label: string; value: number }[]; dataKey: string }) {
+function SimpleBarChart({ data }: { data: { label: string; value: number }[] }) {
   const max = Math.max(...data.map(d => d.value), 1)
   const colors = ["#3b82f6", "#10b981", "#f59e0b", "#ef4444", "#8b5cf6"]
   
@@ -32,8 +32,8 @@ function SimpleBarChart({ data, dataKey }: { data: { label: string; value: numbe
     <div className="space-y-3">
       {data.map((item, i) => (
         <div key={i} className="flex items-center gap-3">
-          <span className="w-20 text-sm text-slate-600 truncate">{item.label}</span>
-          <div className="flex-1 h-6 bg-slate-100 rounded-full overflow-hidden">
+          <span className="w-20 text-sm text-slate-600 dark:text-slate-400 truncate">{item.label}</span>
+          <div className="flex-1 h-6 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
             <div 
               className="h-full rounded-full transition-all"
               style={{ 
@@ -42,7 +42,7 @@ function SimpleBarChart({ data, dataKey }: { data: { label: string; value: numbe
               }}
             />
           </div>
-          <span className="text-sm font-medium w-16 text-right">{item.value}</span>
+          <span className="text-sm font-medium w-16 text-right dark:text-slate-300">{item.value}</span>
         </div>
       ))}
     </div>
@@ -97,85 +97,85 @@ export default function Dashboard() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold">Dashboard</h1>
-        <p className="text-slate-500 mt-1">Overview of your API usage</p>
+        <h1 className="text-3xl font-bold dark:text-white">Dashboard</h1>
+        <p className="text-slate-500 dark:text-slate-400 mt-1">Overview of your API usage</p>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card>
+        <Card className="dark:bg-slate-900 dark:border-slate-800">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Keys</CardTitle>
+            <CardTitle className="text-sm font-medium dark:text-slate-400">Total Keys</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold">{stats?.totalKeys || 0}</div>
-            <p className="text-xs text-slate-500">{stats?.activeKeys || 0} active</p>
+            <div className="text-3xl font-bold dark:text-white">{stats?.totalKeys || 0}</div>
+            <p className="text-xs text-slate-500 dark:text-slate-400">{stats?.activeKeys || 0} active</p>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="dark:bg-slate-900 dark:border-slate-800">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Requests</CardTitle>
+            <CardTitle className="text-sm font-medium dark:text-slate-400">Total Requests</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold">{stats?.totalRequests || 0}</div>
-            <p className="text-xs text-slate-500">all time</p>
+            <div className="text-3xl font-bold dark:text-white">{stats?.totalRequests || 0}</div>
+            <p className="text-xs text-slate-500 dark:text-slate-400">all time</p>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="dark:bg-slate-900 dark:border-slate-800">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Tokens</CardTitle>
+            <CardTitle className="text-sm font-medium dark:text-slate-400">Total Tokens</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold">{(stats?.totalTokens || 0).toLocaleString()}</div>
-            <p className="text-xs text-slate-500">used</p>
+            <div className="text-3xl font-bold dark:text-white">{(stats?.totalTokens || 0).toLocaleString()}</div>
+            <p className="text-xs text-slate-500 dark:text-slate-400">used</p>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="dark:bg-slate-900 dark:border-slate-800">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Keys</CardTitle>
+            <CardTitle className="text-sm font-medium dark:text-slate-400">Active Keys</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold">{stats?.activeKeys || 0}</div>
-            <p className="text-xs text-slate-500">of {stats?.totalKeys || 0}</p>
+            <div className="text-3xl font-bold dark:text-white">{stats?.activeKeys || 0}</div>
+            <p className="text-xs text-slate-500 dark:text-slate-400">of {stats?.totalKeys || 0}</p>
           </CardContent>
         </Card>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
-        <Card>
+        <Card className="dark:bg-slate-900 dark:border-slate-800">
           <CardHeader>
-            <CardTitle>Requests by Day</CardTitle>
+            <CardTitle className="dark:text-white">Requests by Day</CardTitle>
           </CardHeader>
           <CardContent>
             {chartData.length > 0 ? (
-              <SimpleLineChart data={chartData} dataKey="value" />
+              <SimpleLineChart data={chartData} />
             ) : (
-              <p className="text-sm text-slate-500 text-center py-8">No data yet</p>
+              <p className="text-sm text-slate-500 dark:text-slate-400 text-center py-8">No data yet</p>
             )}
           </CardContent>
         </Card>
-        <Card>
+        <Card className="dark:bg-slate-900 dark:border-slate-800">
           <CardHeader>
-            <CardTitle>Usage by Provider</CardTitle>
+            <CardTitle className="dark:text-white">Usage by Provider</CardTitle>
           </CardHeader>
           <CardContent>
             {providerData.length > 0 ? (
-              <SimpleBarChart data={providerData} dataKey="value" />
+              <SimpleBarChart data={providerData} />
             ) : (
-              <p className="text-sm text-slate-500 text-center py-8">No data yet</p>
+              <p className="text-sm text-slate-500 dark:text-slate-400 text-center py-8">No data yet</p>
             )}
           </CardContent>
         </Card>
       </div>
 
-      <Card>
+      <Card className="dark:bg-slate-900 dark:border-slate-800">
         <CardHeader>
-          <CardTitle>Usage by API Key</CardTitle>
+          <CardTitle className="dark:text-white">Usage by API Key</CardTitle>
         </CardHeader>
         <CardContent>
           {keyData.length > 0 ? (
-            <SimpleBarChart data={keyData.slice(0, 5)} dataKey="value" />
+            <SimpleBarChart data={keyData.slice(0, 5)} />
           ) : (
-            <p className="text-sm text-slate-500 text-center py-8">No data yet</p>
+            <p className="text-sm text-slate-500 dark:text-slate-400 text-center py-8">No data yet</p>
           )}
         </CardContent>
       </Card>
