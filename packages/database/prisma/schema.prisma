@@ -1,0 +1,72 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String           @id @default(uuid())
+  email         String           @unique
+  password      String
+  role          Role             @default(USER)
+  apiKeys       ApiKey[]
+  providerConfigs ProviderConfig[]
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+}
+
+model ProviderConfig {
+  id           String     @id @default(uuid())
+  name         String
+  provider     Provider
+  apiKey       String
+  isActive     Boolean    @default(true)
+  userId       String
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  proxyKeys    ApiKey[]
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+}
+
+model ApiKey {
+  id              String         @id @default(uuid())
+  key             String         @unique
+  name            String
+  provider        Provider
+  isActive        Boolean        @default(true)
+  rateLimit       Int            @default(60)
+  userId          String
+  user            User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  providerConfigId String?
+  providerConfig  ProviderConfig? @relation(fields: [providerConfigId], references: [id], onDelete: SetNull)
+  usages          UsageLog[]
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  revokedAt       DateTime?
+}
+
+model UsageLog {
+  id          String   @id @default(uuid())
+  apiKeyId    String
+  apiKey      ApiKey   @relation(fields: [apiKeyId], references: [id], onDelete: Cascade)
+  provider    Provider
+  endpoint    String
+  tokensUsed  Int      @default(0)
+  latencyMs   Int      @default(0)
+  statusCode  Int
+  createdAt   DateTime @default(now())
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+enum Provider {
+  ANTHROPIC
+  OPENAI
+  MINIMAX
+}

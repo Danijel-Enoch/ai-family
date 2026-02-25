@@ -1,0 +1,32 @@
+{
+  "name": "api",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "bun run --watch src/index.ts",
+    "start": "bun run src/index.ts",
+    "build": "tsc",
+    "lint": "eslint src --ext .ts",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "db:push": "prisma db push --schema=../../packages/database/prisma/schema.prisma",
+    "db:studio": "prisma studio --schema=../../packages/database/prisma/schema.prisma"
+  },
+  "dependencies": {
+    "@ai-family/database": "*",
+    "@ai-family/shared": "*",
+    "@elysiajs/cookie": "*",
+    "@elysiajs/cors": "*",
+    "@elysiajs/html": "*",
+    "@elysiajs/jwt": "*",
+    "@elysiajs/static": "*",
+    "@prisma/client": "^6.2.1",
+    "elysia": "*",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "prisma": "^6.2.1",
+    "typescript": "^5.7.2"
+  }
+}
